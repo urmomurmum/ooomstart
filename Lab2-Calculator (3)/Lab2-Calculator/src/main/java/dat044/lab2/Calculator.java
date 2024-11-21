@@ -1,6 +1,7 @@
 package dat044.lab2;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.pow;
@@ -101,8 +102,24 @@ public class Calculator {
 
     // List String (not char) because numbers (with many chars)
     List<String> tokenize(String expr) {
-       // TODO
-        return null;
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < expr.length(); i++) {
+            if (expr.charAt(i) != ' ') {
+                if (expr.length() > i+2 && Character.isDigit(expr.charAt(i)) && Character.isDigit(expr.charAt(i + 1)) && Character.isDigit(expr.charAt(i+2))) {
+                    list.add(expr.substring(i, i+3));
+                    i += 2;
+                }
+                else if (expr.length() > i + 1 && Character.isDigit(expr.charAt(i)) && Character.isDigit(expr.charAt(i+1))) {
+                    list.add(expr.substring(i, i+2));
+                    i++;
+                }
+                else {
+                    String c = String.valueOf(expr.charAt(i));
+                    list.add(c);
+                }
+            }
+        }
+        return list;
     }
 
 }

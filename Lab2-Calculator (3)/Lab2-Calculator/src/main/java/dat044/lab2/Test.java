@@ -27,8 +27,8 @@ class Test {
 
         // Tokenization ---------------------------
 
-        t("1 + 10", "1 + 10");  // Arguments are input and expected output
-        /*
+        t("1 + 100", "1 + 100");  // Arguments are input and expected output
+
         t("1+ 10", "1 + 10");   // Expected is in fact a list [ "1", "+", "10"]
         t("1 +10", "1 + 10");
         t("1+10", "1 + 10");
@@ -36,7 +36,7 @@ class Test {
         t("2 *( 1+10) ", "2 * ( 1 + 10 )");
         t("(1 +2) /2 *( 1+10) ", "( 1 + 2 ) / 2 * ( 1 + 10 )");
 
-
+/*
         // Infix to postfix -----------------------
         i2p("1+10", "1 10 +");
         i2p("1+2+3", "1 2 + 3 +");
