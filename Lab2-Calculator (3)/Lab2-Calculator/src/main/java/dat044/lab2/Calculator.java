@@ -71,8 +71,6 @@ public class Calculator {
         List<String> postfix = new ArrayList<>();
         Stack<String> stack = new Stack<>();
         for(int i = 0; i < infix.size(); i++) {
-            System.out.println(postfix);
-            System.out.println(stack);
             String token = infix.get(i);
             if (token.equals("(")) {
                 stack.push(token);
@@ -88,13 +86,16 @@ public class Calculator {
                 postfix.add(token);
             }
             else if ("+*/-^".contains(token)) {
-                if (getPrecedence(token) > getPrecedence(stack.peek())) {
+                if (stack.empty() || stack.peek().equals("(") || getPrecedence(token) > getPrecedence(stack.peek())) {
                     stack.push(token);
                 }
                 else if (getPrecedence(token) == getPrecedence(stack.peek()) && getAssociativity(token).equals(Assoc.LEFT)) {
                     while (!stack.empty()){
                         postfix.add(stack.pop());
                     }
+                    stack.push(token);
+                }
+                else if (getPrecedence(token) == getPrecedence(stack.peek())) {
                     stack.push(token);
                 }
                 else {
