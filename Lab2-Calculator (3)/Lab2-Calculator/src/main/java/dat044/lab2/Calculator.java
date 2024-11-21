@@ -71,6 +71,8 @@ public class Calculator {
         List<String> postfix = new ArrayList<>();
         Stack<String> stack = new Stack<>();
         for(int i = 0; i < infix.size(); i++) {
+            System.out.println(postfix);
+            System.out.println(stack);
             String token = infix.get(i);
             if (token.equals("(")) {
                 stack.push(token);
