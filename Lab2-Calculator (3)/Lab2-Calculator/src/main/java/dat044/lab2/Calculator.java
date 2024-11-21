@@ -2,6 +2,7 @@ package dat044.lab2;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.pow;
@@ -67,8 +68,51 @@ public class Calculator {
     // ------- Infix 2 Postfix ------------------------
 
     List<String> infix2Postfix(List<String> infix) {
-        // TODO
-        return null;
+        List<String> postfix = new ArrayList<>();
+        Stack<String> stack = new Stack<>();
+        for(int i = 0; i < infix.size(); i++) {
+            String token = infix.get(i);
+            if (token.equals("(")) {
+                stack.push(token);
+            }
+            else if (token.equals(")")) {
+                while(!stack.peek().equals("(")) {
+                    String op = stack.pop();
+                    postfix.add(op);
+                }
+                stack.pop();
+            }
+            else if (Character.isDigit(token.charAt(0))) {
+                postfix.add(token);
+            }
+            else if ("+*/-^".contains(token)) {
+                if (getPrecedence(token) > getPrecedence(stack.peek())) {
+                    stack.push(token);
+                }
+                else if (getPrecedence(token) == getPrecedence(stack.peek()) && getAssociativity(token).equals(Assoc.LEFT)) {
+                    while (!stack.empty()){
+                        postfix.add(stack.pop());
+                    }
+                    stack.push(token);
+                }
+                else {
+                    while (!stack.empty()){
+                        postfix.add(stack.pop());
+                    }
+                    stack.push(token);
+                }
+
+            }
+            else {
+                System.out.println("Invalid char");
+            }
+            if (i == infix.size() - 1) {
+                while (!stack.empty()) {
+                    postfix.add(stack.pop());
+                }
+            }
+        }
+        return postfix;
     }
 
     int getPrecedence(String op) {
