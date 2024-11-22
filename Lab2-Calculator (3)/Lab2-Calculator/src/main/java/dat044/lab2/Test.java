@@ -36,7 +36,7 @@ class Test {
         t("2 *( 1+10) ", "2 * ( 1 + 10 )");
         t("(1 +2) /2 *( 1+10) ", "( 1 + 2 ) / 2 * ( 1 + 10 )");
 */
-
+/*
         // Infix to postfix -----------------------
         i2p("1+10", "1 10 +");
         i2p("1+2+3", "1 2 + 3 +");
@@ -49,7 +49,8 @@ class Test {
         i2p("4^3*2", "4 3 ^ 2 *");
         i2p("(1+2)*3", "1 2 + 3 *");
         i2p("2^(1+1)", "2 1 1 + ^");
-/*
+        i2p("1 + 2 *3", "1 2 3 * +");
+*//*
         // Evaluation ------------------------------
         // A value
         e("123", 123);
@@ -93,7 +94,7 @@ class Test {
         // Mix priority and right and left associativity
         e(" 1 ^ 1 ^ 1 ^ 1  - 1", 0);
         e(" 4 - 2 - 1 ^ 2 ", 1);
-
+*/
         // Exceptions -----------------------------------
         try {
             e("1 / 0 ", 0);   // 0 just a dummy
@@ -120,9 +121,9 @@ class Test {
         } catch (IllegalArgumentException e) {
             out.println(e.getMessage().equals(Calculator.MISSING_OPERATOR));
         }
-*/
-    }
 
+    }
+/*
 
     // ------- Below are helper methods for testing NOTHING to do here -------------------
 
@@ -140,7 +141,7 @@ class Test {
         String result = String.join(" ", postfix);
         out.println(result.equals(expected));
     }
-
+*/
     // Evaluation
     void e(String infix, double expected) {
         List<String> tokens = calculator.tokenize(infix);

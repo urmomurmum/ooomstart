@@ -42,8 +42,34 @@ public class Calculator {
     // ------  Evaluate RPN expression -------------------
 
     double evalPostfix(List<String> postfix) {
-        // TODO
-        return 0;
+        List<Double> numbers = new ArrayList<>();
+        for(int i = 0; i < postfix.size(); i++) {
+            if (OPERATORS.contains(postfix.get(i))) {
+                if (numbers.size() > 1) {
+                    double d1 = numbers.get(numbers.size() - 1);
+                    numbers.remove(numbers.size() - 1);
+                    double d2 = numbers.get(numbers.size() - 1);
+                    numbers.remove(numbers.size() - 1);
+                    double number = applyOperator(postfix.get(i), d1, d2);
+                    numbers.add(number);
+                }
+                else {
+                    System.out.println(MISSING_OPERAND);
+                    return 0;
+                }
+            }
+            else {
+                double num = Double.parseDouble(postfix.get(i));
+                numbers.add(num);
+            }
+        }
+        if (numbers.size() > 1) {
+            System.out.println(MISSING_OPERATOR);
+            return 0;
+        }
+
+        double result = numbers.get(0);
+        return result;
     }
 
     double applyOperator(String op, double d1, double d2) {
@@ -77,15 +103,23 @@ public class Calculator {
             }
             else if (token.equals(")")) {
                 while(!stack.peek().equals("(")) {
-                    String op = stack.pop();
-                    postfix.add(op);
+                    if (!stack.empty()) {
+                        String op = stack.pop();
+                        postfix.add(op);
+                    }
+                    else {
+                        System.out.println(MISSING_OPERATOR);
+                        List<String> zero = new ArrayList<>();
+                        zero.add("0");
+                        return (zero);
+                    }
                 }
                 stack.pop();
             }
             else if (Character.isDigit(token.charAt(0))) {
                 postfix.add(token);
             }
-            else if ("+*/-^".contains(token)) {
+            else if (OPERATORS.contains(token)) {
                 if (stack.empty() || stack.peek().equals("(") || getPrecedence(token) > getPrecedence(stack.peek())) {
                     stack.push(token);
                 }
