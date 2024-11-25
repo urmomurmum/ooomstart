@@ -54,8 +54,7 @@ public class Calculator {
                     numbers.add(number);
                 }
                 else {
-                    System.out.println(MISSING_OPERAND);
-                    return 0;
+                    throw new IllegalArgumentException(MISSING_OPERAND);
                 }
             }
             else {
@@ -64,8 +63,7 @@ public class Calculator {
             }
         }
         if (numbers.size() > 1) {
-            System.out.println(MISSING_OPERATOR);
-            return 0;
+            throw new IllegalArgumentException(MISSING_OPERATOR);
         }
 
         double result = numbers.get(0);
@@ -96,24 +94,23 @@ public class Calculator {
     List<String> infix2Postfix(List<String> infix) {
         List<String> postfix = new ArrayList<>();
         Stack<String> stack = new Stack<>();
+        int incorrectParentheses = 0;
+
         for(int i = 0; i < infix.size(); i++) {
             String token = infix.get(i);
             if (token.equals("(")) {
+                incorrectParentheses++;
                 stack.push(token);
             }
             else if (token.equals(")")) {
-                while(!stack.peek().equals("(")) {
-                    if (!stack.empty()) {
-                        String op = stack.pop();
-                        postfix.add(op);
-                    }
-                    else {
-                        System.out.println(MISSING_OPERATOR);
-                        List<String> zero = new ArrayList<>();
-                        zero.add("0");
-                        return (zero);
-                    }
+                while(!stack.empty() && !stack.peek().equals("(")) {
+                    String op = stack.pop();
+                    postfix.add(op);
                 }
+                if (stack.empty()) {
+                    throw new IllegalArgumentException(MISSING_OPERATOR);
+                }
+                incorrectParentheses--;
                 stack.pop();
             }
             else if (Character.isDigit(token.charAt(0))) {
@@ -148,6 +145,9 @@ public class Calculator {
                     postfix.add(stack.pop());
                 }
             }
+        }
+        if (incorrectParentheses != 0){
+            throw new IllegalArgumentException(MISSING_OPERATOR);
         }
         return postfix;
     }
